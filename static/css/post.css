@@ -1,34 +1,48 @@
 * {
     font-family: Maven Pro;
 }
+
 .container {
     margin-top: 20px;
 
 }
+
 .post {
     padding: 15px 0;
 }
+
 a:hover {
     cursor: pointer;
     text-decoration: none;
 }
+
 h3 {
     transition: color 0.4s;
 }
+
 h3:hover {
     color: #d9534f;
     cursor: pointer;
 }
+
 textarea {
     resize: none;
     height: 140px;
 }
+
 .follow-btn {
     transition: color 0.4s;
     display: inline-block
+}
+.post-title {
+    border-bottom: 2px solid #d9534f;
 }
 .follow-btn:hover {
     color: #d9534f;
     cursor: pointer;
 
 }
+
+/* body {
+    background: black
+} */

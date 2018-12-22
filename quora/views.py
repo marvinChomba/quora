@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .forms import PostForm
+from .forms import PostForm,AnswerForm
 from django.contrib.auth.decorators import login_required
-from .models import Post
+from .models import Post,Answers
 from django.http import JsonResponse
 
 # Create your views here.
@@ -52,4 +52,41 @@ def follow(request):
         post.followers.add(request.user)
         following = 1
     data = {"following":following,"count":post.followers.all().count()}
+    return JsonResponse(data)
+
+def single_post(request,post_id):
+    post = get_object_or_404(Post, id = post_id)
+    answers = post.answers.all()
+    
+    for answer in answers:
+        if request.user in answer.votes.all():
+            answer.user_has_liked = True
+        else:
+            answer.user_has_liked = False
+        print(answer.user_has_liked)
+
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit = False)
+            answer.author = request.user
+            answer.post = post
+            answer.save()
+            return redirect("single_post", post_id = post_id)
+    else:
+        form = AnswerForm()
+    context = {"post":post,"answers":answers,"form":form}
+
+    return render(request, "post.html", context)
+
+def like_comment(request):
+    answer = get_object_or_404(Answers, id = request.POST.get("id"))
+    if request.user in answer.votes.all():
+        answer.votes.remove(request.user)
+        has_liked = 0
+    else:
+        answer.votes.add(request.user)
+        has_liked = 1
+
+    data = {"has_liked":has_liked, "count":answer.votes.all().count()}
     return JsonResponse(data)

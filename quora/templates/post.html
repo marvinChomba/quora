@@ -1,0 +1,73 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block styles %}
+    {% bootstrap_css %}
+    <link href="https://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/post.css'%}">
+    {% endblock %}
+    <title>New Post</title>
+</head>
+<body>
+    {% include 'post-navbar.html' %}
+    {% include 'post-modal.html' %}
+    <div class="container">
+        <h2 class="mb-3 d-inline-block pb-2 post-title">{{post.title}}</h2>
+        <p class="my-3" style="font-size: 1.2em">"{{post.content}}"</p>
+        <div class="comment-section">
+            <h4 class='d-inline-block post-title'>{{post.answers.all.count}} answer[s]</h4>
+            {% for answer in answers %}
+                <div class="post">
+                    <div class="header">
+                        <h3 class="d-inline-block mr-2">{{answer.title}}</h3>
+                        <p>{{answer.content}}</p> 
+                    </div>
+                    <small>Published {{answer.pub_date|timesince}} ago by {{post.author.username}}</small>
+                    <div class="extras mb-0 pb-0">
+                        {% if answer.user_has_liked %}
+                        <a onclick="like('{{answer.id}}') " class="mt-2 mr-2 follow-btn text-dark" value="{{answer.id}}" style="text-decoration: none;">Unlike
+                            <span class="badge badge-danger">{{answer.votes.all.count}}</span></a>
+                        {% else %}
+                        <a onclick="like('{{answer.id}}')" class="mt-2 mr-2 follow-btn text-dark" value="{{answer.id}}">Like <span class="badge badge-danger">{{answer.votes.all.count}}</span></a>
+                        {% endif %}
+                    </div>
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {% bootstrap_javascript %}
+    <script>
+        "use strict"
+        function like(answer_id) {
+            var buttonSelector = `a[value=${answer_id}]`
+            var aClicked = $(buttonSelector)
+            $.ajax({
+                "url": "/like/comment/",
+                "type": "POST",
+                "data": {
+                    "id":parseInt(answer_id),
+                    "csrfmiddlewaretoken": '{{csrf_token}}'
+                },
+                "dataType": "json",
+                "success": function(res) {
+                    if (res["has_liked"] === 1) {
+                        aClicked.html(`Unlike <span class='badge badge-danger'>${res["count"]}</span>`)
+                    } else {
+                        aClicked.html(`Like <span class='badge badge-danger'>${res["count"]}</span>`)
+                    }
+                }
+
+            })
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>

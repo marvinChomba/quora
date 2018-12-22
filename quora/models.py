@@ -41,9 +41,7 @@ class Post(models.Model):
     """
     title = models.CharField(max_length = 60)
     author = models.ForeignKey(User, related_name = "posts", null = True)
-    upvotes = models.ManyToManyField(User, related_name = "upvotes")
     category = models.ForeignKey(Category, related_name = "posts", null = True)
-    downvotes = models.ManyToManyField(User,related_name= "downvotes")
     pub_date = models.DateTimeField(auto_now_add = True)
     content = models.TextField()
     followers = models.ManyToManyField(User, related_name = "followers")
@@ -59,6 +57,8 @@ class Answers(models.Model):
     pub_date = models.DateTimeField(auto_now_add = True)
     title = models.CharField(max_length = 30)
     content = models.TextField()
+    votes = models.ManyToManyField(User, related_name="votes")
+
     
     def __str__(self):
         return self.title
