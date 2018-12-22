@@ -6,7 +6,20 @@ from .models import Post
 # Create your views here.
 def index(request):
     posts = Post.objects.all().order_by("-pub_date")
-    return render(request,"index.html",{"posts":posts})
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.author = request.user
+            new_post.save()
+            return redirect("index")
+    else:
+        form = PostForm()
+    context = {
+        "form": form,
+        "posts":posts
+    }
+    return render(request,"index.html",context)
 
 def add_post(request):
 
