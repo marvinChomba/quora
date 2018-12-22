@@ -46,6 +46,7 @@ class Post(models.Model):
     downvotes = models.ManyToManyField(User,related_name= "downvotes")
     pub_date = models.DateTimeField(auto_now_add = True)
     content = models.TextField()
+    followers = models.ManyToManyField(User, related_name = "followers")
 
     def __str__(self):
         return self.title

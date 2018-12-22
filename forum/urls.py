@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url("",include("quora.urls")),
     url(r"^accounts/", include("registration.backends.simple.urls")),
-    url(r"^logout$", logout, {"next_page":"/"})
+    url(r"^logout/$", logout, {"next_page":"/"})
 ]

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "bootstrap4",
     "quora",
-    'pyuploadcare.dj'
+    'pyuploadcare.dj',
+    "materialize"
 ]
 
 MIDDLEWARE = [
