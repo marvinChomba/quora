@@ -7,7 +7,7 @@ from .models import Post
 def index(request):
     posts = Post.objects.all().order_by("-pub_date")
     return render(request,"index.html",{"posts":posts})
-@login_required(login_url = "/accounts/login/")
+
 def add_post(request):
 
     if request.method == "POST":

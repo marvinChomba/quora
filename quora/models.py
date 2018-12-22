@@ -30,8 +30,8 @@ class Category(models.Model):
     This is the class that will contain be used to create all the categories
     """
     name = models.CharField(max_length = 40)
-    starter = models.ForeignKey(User, related_name = "categories_started")
-    users_subscribed = models.ForeignKey(User, related_name = "categories_joined")
+    starter = models.ForeignKey(User, related_name = "categories_started",null = True)
+    users_subscribed = models.ForeignKey(User, related_name = "categories_joined", null = True)
 
     def __str__(self):
         return self.name
@@ -40,9 +40,9 @@ class Post(models.Model):
     This is the class that will be used to create the questions by the user
     """
     title = models.CharField(max_length = 60)
-    author = models.ForeignKey(User, related_name = "posts")
+    author = models.ForeignKey(User, related_name = "posts", null = True)
     upvotes = models.ManyToManyField(User, related_name = "upvotes")
-    category = models.ForeignKey(Category, related_name = "posts")
+    category = models.ForeignKey(Category, related_name = "posts", null = True)
     downvotes = models.ManyToManyField(User,related_name= "downvotes")
     pub_date = models.DateTimeField(auto_now_add = True)
     content = models.TextField()
