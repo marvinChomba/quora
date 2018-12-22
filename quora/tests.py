@@ -42,14 +42,25 @@ FORMS TESTS
 class FormsTestCase(TestCase):
     def test_valid_form(self):
         new_category = Category.objects.create(name = "Tech")
-        new_post = Post.objects.create(title="Hye", content="There", category=new_category)
-        data = {"title":new_post.title, "content":new_post.content,"category":new_post.category}
+        new_post = Post.objects.create(title="Hye", content="There")
+        data = {"title":new_post.title, "content":new_post.content}
         form = PostForm(data = data)
         self.assertTrue(form.is_valid())
 
     def test_invalid_form(self):
         new_category = Category.objects.create(name="Tech")
-        new_post = Post.objects.create(title="Hye", content="", category=new_category)
+        new_post = Post.objects.create(title="Hye", content="")
         data = {"title": new_post.title, "content": new_post.content,"category": new_post.category}
         form = PostForm(data=data)
         self.assertFalse(form.is_valid())
+
+    def test_csrf(self):
+        url = reverse("new_post")
+        response = self.client.get(url)
+        self.assertContains(response, "csrfmiddlewaretoken")
+
+    def test_form_contains_all_fields(self):
+        url = reverse("new_post")
+        response = self.client.get(url)
+        self.assertContains(response, "Content")
+        self.assertContains(response, "Title")

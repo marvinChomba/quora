@@ -7,12 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
+    {% block styles %}
+        {% bootstrap_css %}
+        <link rel="stylesheet" href="{% static 'css/index.css'%}">
+    {% endblock %}
 </head>
 <body>
+    {% include 'navbar.html' %}
     <div class="container">
         {% for post in posts%}
-        <p>{{post.content}}</p>
+        <div class="post">
+            <div class="header">
+                <h3 class="d-inline-block mr-2">{{post.title}}</h3>    <a href="#"class="badge badge-danger text-white">{{post.category.name}}</a>
+            </div>
+            <small>Published {{post.pub_date|timesince}} ago by {{post.author.username}}</small>
+            <hr>
+        </div>
         {% endfor %}
+
     </div>
 </body>
 </html>
