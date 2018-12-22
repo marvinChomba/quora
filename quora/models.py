@@ -45,6 +45,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, related_name = "posts")
     downvotes = models.ManyToManyField(User,related_name= "downvotes")
     pub_date = models.DateTimeField(auto_now_add = True)
+    content = models.TextField()
 
     def __str__(self):
         return self.title
