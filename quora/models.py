@@ -45,6 +45,9 @@ class Post(models.Model):
         ("link","link"),
         ("post","post")
     )
+    objects = models.Manager()
+    links = LinkManager()
+    posts = PostManager()
     title = models.CharField(max_length = 60)
     author = models.ForeignKey(User, related_name = "posts", null = True)
     category = models.ForeignKey(Category, related_name = "posts", null = True)
