@@ -19,8 +19,8 @@
     <div class="container">
         <h2 class="mb-3 d-inline-block pb-2 post-title">{{post.title}}</h2>
         <p class="my-3" style="font-size: 1.2em">"{{post.content}}"</p>
-        <div class="comment-section">
-            <h4 class='d-inline-block post-title'>{{post.answers.all.count}} answer[s]</h4>
+        <div class="comment-section container mx-2">
+            <h4 class='d-inline-block post-title pb-1'>{{post.answers.all.count}} answer[s]</h4>
             {% for answer in answers %}
                 <div class="post">
                     <div class="header">

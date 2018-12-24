@@ -3,10 +3,10 @@ from .forms import PostForm,AnswerForm
 from django.contrib.auth.decorators import login_required
 from .models import Post,Answers
 from django.http import JsonResponse
-
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 # Create your views here.
 def index(request):
-    posts = Post.objects.all().order_by("-pub_date")
+    objects_list = Post.objects.all().order_by("-pub_date")
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
@@ -16,6 +16,20 @@ def index(request):
             return redirect("index")
     else:
         form = PostForm()
+
+    
+    # add pagination
+    paginator = Paginator(objects_list,4)
+
+    page = request.GET.get("page")
+
+    try:
+        posts = paginator.page(page)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+        
     for post in posts:
         if request.user in post.followers.all():
             post.user_is_following = True
@@ -24,6 +38,7 @@ def index(request):
     context = {
         "form": form,
         "posts":posts,
+        "page":page
     }
     return render(request,"index.html",context)
 

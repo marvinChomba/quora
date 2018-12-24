@@ -62,3 +62,13 @@ class Answers(models.Model):
     
     def __str__(self):
         return self.title
+
+class Reply(models.Model):
+    """
+    This is the class to reply to answers
+    """
+    content = models.TextField()
+    author = models.ForeignKey(User, related_name = "replies", on_delete = models.CASCADE)
+    pub_date = models.DateTimeField(auto_now_add = True)
+    answer = models.ForeignKey(Answers, related_name = "replies", on_delete = models.CASCADE)
+    

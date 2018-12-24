@@ -24,7 +24,7 @@
             <div class="header">
                 <a href="{% url 'single_post' post.id%}" class="text-dark"><h3 class="d-inline-block mr-2">{{post.title}}</h3></a>    <a href="#"class="badge badge-danger text-white">{{post.category.name}}</a>
             </div>
-            <small>Published {{post.pub_date|timesince}} ago by {{post.author.username}}</small>
+            <small class="timestamp">Published {{post.pub_date|timesince}} ago by {{post.author.username}}</small>
             <div class="extras mb-0 pb-0">
                 {% if post.user_is_following %} 
                 <a onclick="follow('{{post.id}}') " class="mt-2 mr-2 follow-btn text-dark" value="{{post.id}}" style="text-decoration: none;">Following <span class="badge badge-danger">{{post.followers.all.count}}</span></a>
@@ -35,6 +35,9 @@
             <hr>
         </div>
         {% endfor %}
+        <div class="m-auto" style="display:flex;justify-content:center">
+            {% include 'pagination.html' with page=posts%}
+        </div>
     </div>
 
     {% block scripts %}

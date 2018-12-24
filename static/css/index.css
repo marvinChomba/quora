@@ -8,6 +8,13 @@
 .post {
     padding: 15px 0;
 }
+.active span{
+    color: #d9534f
+}
+.timestamp {
+    font-style: italic;
+    opacity: 0.6;
+}
 a:hover {
     cursor: pointer;
     text-decoration: none;
