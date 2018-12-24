@@ -5,7 +5,7 @@
     <ul class="pagination">
         {% if posts.has_previous %}
         <li class="page-item">
-<a href="?page={{posts.previous_next_number}}" class="page-link" style="background-color: #d9534f; color:white">Previous</a>
+<a href="?page={{posts.previous_page_number}}" class="page-link" style="background-color: #d9534f; color:white">Previous</a>
         </li>
         {% else %}
         <li class="page-item disabled">

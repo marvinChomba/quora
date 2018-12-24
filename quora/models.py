@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from pyuploadcare.dj.models import ImageField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from .managers import PostManager,LinkManager
+from django.urls import resolve,reverse
 
 # Create your models here.
 class Profile(models.Model):
@@ -39,12 +41,20 @@ class Post(models.Model):
     """
     This is the class that will be used to create the questions by the user
     """
+    TYPE_CHOICES = (
+        ("link","link"),
+        ("post","post")
+    )
     title = models.CharField(max_length = 60)
     author = models.ForeignKey(User, related_name = "posts", null = True)
     category = models.ForeignKey(Category, related_name = "posts", null = True)
     pub_date = models.DateTimeField(auto_now_add = True)
     content = models.TextField()
+    post_type = models.CharField(max_length = 10, choices = TYPE_CHOICES, default = "post")
     followers = models.ManyToManyField(User, related_name = "followers")
+
+    def get_absolute_url(self):
+        return reverse("single_post",args = [self.id])
 
     def __str__(self):
         return self.title

@@ -22,7 +22,7 @@
         {% for post in posts%}
         <div class="post">
             <div class="header">
-                <a href="{% url 'single_post' post.id%}" class="text-dark"><h3 class="d-inline-block mr-2">{{post.title}}</h3></a>    <a href="#"class="badge badge-danger text-white">{{post.category.name}}</a>
+                <a href="{{post.get_absolute_url }}" class="text-dark"><h3 class="d-inline-block mr-2">{{post.title}}</h3></a>    <a href="#"class="badge badge-danger text-white">{{post.category.name}}</a>
             </div>
             <small class="timestamp">Published {{post.pub_date|timesince}} ago by {{post.author.username}}</small>
             <div class="extras mb-0 pb-0">
