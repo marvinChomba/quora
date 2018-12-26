@@ -5,6 +5,8 @@ from .models import Post,Answers
 from django.http import JsonResponse
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from taggit.models import Tag
+from django.db.models import Count
+
 # Create your views here.
 def index(request):
     objects_list = Post.objects.all().order_by("-pub_date")
@@ -78,6 +80,8 @@ def tag_posts(request,tag_name):
 
 def single_post(request,post_id):
     post = get_object_or_404(Post, id = post_id)
+
+    
     answers = post.answers.all()
     
     for answer in answers:
@@ -97,7 +101,20 @@ def single_post(request,post_id):
             return redirect("single_post", post_id = post_id)
     else:
         form = AnswerForm()
-    context = {"post":post,"answers":answers,"form":form}
+
+    # get the tag ids
+    post_tag = post.tags.values_list("id",flat = True)
+
+    # get the posts with the same tags
+    if post_tag:
+        similar_posts = Post.objects.filter(tags__in = post_tag).exclude(id = post.id)
+
+        # arrange them in the right order
+        similar_posts = similar_posts.annotate(same_tags=Count("tags")).order_by("-same_tags", "-pub_date")[:4]
+    else:
+        similar_posts = None
+
+    context = {"post":post,"answers":answers,"form":form,"similar_posts":similar_posts}
 
     return render(request, "post.html", context)
 

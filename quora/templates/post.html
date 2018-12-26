@@ -19,6 +19,12 @@
     <div class="container">
         <h2 class="mb-3 d-inline-block pb-2 post-title">{{post.title}}</h2>
         <p class="my-3" style="font-size: 1.2em">"{{post.content}}"</p>
+        {% if similar_posts %}
+            <h4>Similar Posts</h4>
+            {% for post in similar_posts %}
+                <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+            {% endfor %}
+        {% endif %}
         <div class="comment-section container mx-2">
             <h4 class='d-inline-block post-title pb-1'>{{post.answers.all.count}} answer[s]</h4>
             {% for answer in answers %}
