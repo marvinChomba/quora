@@ -6,5 +6,6 @@ urlpatterns = [
     url(r"^$", views.index, name = "index"),
     url(r"^follow/post/",views.follow, name = "follow"),
     url(r"^post/(?P<post_id>\d+)/$", views.single_post, name = "single_post"),
-    url(r"^like/comment/$",views.like_comment, name = "like_comment")
+    url(r"^like/comment/$",views.like_comment, name = "like_comment"),
+    url(r"tag/(.*)/$",views.tag_posts,name="tag_posts")
 ]

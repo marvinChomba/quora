@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "bootstrap4",
     "quora",
     'pyuploadcare.dj',
-    "materialize"
+    "materialize",
+    'taggit'
 ]
 
 MIDDLEWARE = [

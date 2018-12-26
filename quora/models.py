@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .managers import PostManager,LinkManager
 from django.urls import resolve,reverse
-
+from taggit.managers import TaggableManager
 # Create your models here.
 class Profile(models.Model):
     """
@@ -27,16 +27,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-class Category(models.Model):
-    """
-    This is the class that will contain be used to create all the categories
-    """
-    name = models.CharField(max_length = 40)
-    starter = models.ForeignKey(User, related_name = "categories_started",null = True)
-    users_subscribed = models.ForeignKey(User, related_name = "categories_joined", null = True)
-
-    def __str__(self):
-        return self.name
 class Post(models.Model):
     """
     This is the class that will be used to create the questions by the user
@@ -45,12 +35,12 @@ class Post(models.Model):
         ("link","link"),
         ("post","post")
     )
+    tags = TaggableManager()
     objects = models.Manager()
     links = LinkManager()
     posts = PostManager()
     title = models.CharField(max_length = 60)
     author = models.ForeignKey(User, related_name = "posts", null = True)
-    category = models.ForeignKey(Category, related_name = "posts", null = True)
     pub_date = models.DateTimeField(auto_now_add = True)
     content = models.TextField()
     post_type = models.CharField(max_length = 10, choices = TYPE_CHOICES, default = "post")

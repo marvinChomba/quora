@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post,Answers
 from django.http import JsonResponse
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from taggit.models import Tag
 # Create your views here.
 def index(request):
     objects_list = Post.objects.all().order_by("-pub_date")
@@ -68,6 +69,12 @@ def follow(request):
         following = 1
     data = {"following":following,"count":post.followers.all().count()}
     return JsonResponse(data)
+
+def tag_posts(request,tag_name):
+    tag = get_object_or_404(Tag, name = tag_name)
+    posts = Post.objects.filter(tags__in = [tag])
+    return render(request,"tag_posts.html",{"posts":posts,"tag":tag_name})
+
 
 def single_post(request,post_id):
     post = get_object_or_404(Post, id = post_id)

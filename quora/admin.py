@@ -1,18 +1,17 @@
 from django.contrib import admin
-from .models import Post,Category,Answers,Profile
+from .models import Post,Answers,Profile
 
 # Register your models here.
-admin.site.register(Category)
 admin.site.register(Answers)
 admin.site.register(Profile)
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title","author","category","pub_date")
-    list_filter = ("pub_date","category","author")
+    list_display = ("title","author","pub_date")
+    list_filter = ("pub_date","author")
     search_fields = ("title",)
-    raw_id_fields = ("author","category")
+    raw_id_fields = ("author",)
     filter_horizontal = ("followers",)
 
     #list display

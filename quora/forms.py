@@ -5,7 +5,7 @@ from pyuploadcare.dj.forms import ImageField
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ("title","content","category",)
+        fields = ("title","content","tags")
 
 class AnswerForm(forms.ModelForm):
     class Meta:
